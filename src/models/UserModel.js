@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import sequelize from '../../config/dbConfig.js'; // Importa la instancia de conexión
+import sequelize from '../../config/dbConfig.js';
 
 const User = sequelize.define('User', {
     // Atributos del modelo
@@ -17,6 +17,7 @@ const User = sequelize.define('User', {
     timestamps: false
 });
 
-// No olvides sincronizar el modelo con la base de datos
+
+
 await User.sync();
 export default User;

@@ -1,10 +1,13 @@
-import express from 'express';
-import { getTransfer, createTrans } from './controllers/transferController.js';
+// transferRoutes.js
+import { Router } from 'express';
+import { createTransfer, getTransfers, getSentTransfersByUserId, getReceivedTransfersByUserId } from '../controllers/TransferController.js';
 
-const router = express.Router();
+const router = Router();
 
-router.get('/transfer', getTransfer);
-router.post('/transfer', createTrans);
+router.post('/', createTransfer);
+router.get('/', getTransfers);
+router.get('/:id/sent', getSentTransfersByUserId);
+router.get('/:id/received', getReceivedTransfersByUserId);
 
 
-app.use('/api', router);
+export default router;

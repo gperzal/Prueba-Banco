@@ -8,6 +8,24 @@ export const getUsers = async (req, res, next) => {
     }
 };
 
+
+export const getUserById = async (req, res, next) => {
+    try {
+        const id = req.params.id; // Obtener el ID del usuario desde los parámetros de la ruta
+        const user = await User.findByPk(id);
+
+        if (user) {
+            res.json(user); // Si el usuario existe, devolver los datos del usuario
+        } else {
+            res.status(404).send('Usuario no encontrado'); // Si no se encuentra el usuario, devolver un error 404
+        }
+    } catch (error) {
+        next(error); // Pasar el error al middleware de manejo de errores
+    }
+};
+
+
+
 export const createUser = async (req, res, next) => {
     try {
         const user = await User.create(req.body);
