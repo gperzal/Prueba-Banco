@@ -43,10 +43,10 @@
 
 <!-- Modal para confirmar eliminación -->
 <dialog id="deleteUserModal" class="modal">
-    <form method="dialog" class="modal-box">
+    <form id="deleteUserForm" method="dialog" class="modal-box">
         <h3 class="font-bold text-lg">¿Está seguro que desea eliminar este usuario?</h3>
         <div class="modal-action">
-            <button type="submit" class="btn btn-error">Eliminar</button>
+            <button type="submit" class="btn btn-error btn-confirm-delete">Eliminar</button>
             <button type="button" class="btn" onclick="deleteUserModal.close()">Cancelar</button>
         </div>
     </form>

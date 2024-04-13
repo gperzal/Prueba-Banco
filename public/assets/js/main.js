@@ -66,13 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(data => {
                 // Cierra el modal y recarga el contenido de usuarios
-                // Aquí necesitas tener una función que vuelva a cargar la tabla de usuarios
                 cargarContenidoUsuarios();
-                document.getElementById('editUserModal').close(); // Asegúrate de que este es el ID correcto del modal
+                document.getElementById('editUserModal').close();
             })
             .catch(error => {
                 console.error('Error al actualizar el usuario:', error);
-                // Aquí puedes manejar el error, como mostrar un mensaje al usuario
+
             });
     });
 
@@ -111,6 +110,8 @@ function cargarContenidoUsuarios() {
                         `;
                         tableBody.innerHTML += row;
                     });
+
+
                     // Ocultar el skeleton y mostrar la tabla
                     document.getElementById('userTableSkeleton').classList.add('hidden');
                     document.getElementById('userTableContainer').classList.remove('hidden');
@@ -122,28 +123,23 @@ function cargarContenidoUsuarios() {
 
 
 
-// Función para Eliminar un usuario// Asumiendo que tienes un botón de "Eliminar" en cada fila de la tabla que llama a esta función
-
-// Esta función se llama cuando se hace clic en el botón de "Eliminar" de un usuario en la tabla
-function confirmarEliminacion(userId) {
+// Agregar event listener cuando el modal se muestra y está listo
+function eliminarUsuario(userId) {
+    const deleteUserForm = document.getElementById('deleteUserForm');
     const deleteUserModal = document.getElementById('deleteUserModal');
-    const botonEliminar = deleteUserModal.querySelector('.btn-error');
 
-    // Guarda el ID del usuario en el botón de eliminar del modal
-    botonEliminar.dataset.userId = userId;
+    deleteUserForm.dataset.userId = userId;
 
-    // Muestra el modal de confirmación
     deleteUserModal.showModal();
+
+    deleteUserForm.addEventListener('submit', manejarEliminacionUsuario);
 }
 
-// Añadir un controlador de eventos al botón de eliminar dentro del modal
-document.querySelector('#deleteUserModal .btn-error').addEventListener('click', function () {
-    const userId = this.dataset.userId; // El ID del usuario a eliminar
-    eliminarUsuario(userId);
-});
+function manejarEliminacionUsuario(event) {
+    event.preventDefault();
+    console.log(event.target.dataset.userId);
+    const userId = event.target.dataset.userId;
 
-function eliminarUsuario(userId) {
-    // Aquí iría la llamada a la API
     fetch(`/api/users/${userId}`, {
         method: 'DELETE'
     })
@@ -151,24 +147,20 @@ function eliminarUsuario(userId) {
             if (!response.ok) {
                 throw new Error('Error al eliminar el usuario');
             }
-            // Elimina la fila de la tabla y cierra el modal
-            document.querySelector(`tr[data-user-id="${userId}"]`).remove();
-            document.getElementById('deleteUserModal').close();
+
+            return response.text();
+        })
+        .then(() => {
+            document.getElementById('deleteUserModal').close(); // Cierra el modal
+            cargarContenidoUsuarios(); // Actualiza la lista de usuarios
         })
         .catch(error => {
             console.error('Error al eliminar el usuario:', error);
-            // Aquí podrías mostrar un mensaje de error si fuera necesario
         });
 }
 
-// Esta función se llama cuando se hace clic en "Cancelar" en el modal de confirmación
-function cerrarModalEliminar() {
-    document.getElementById('deleteUserModal').close();
-}
-
-
-
 // FIN ELIMINAR USUARIO
+
 
 // Función para Actualizar un usuario
 function editarUsuario(userId) {
@@ -220,9 +212,9 @@ function manejarEnvioFormulario(event) {
         document.getElementById('editUserModal').close(); // Cierra el modal
     }).catch(error => {
         console.error('Error al actualizar el usuario:', error);
-        // Maneja el error mostrando un mensaje al usuario, por ejemplo.
+
     });
-    // Aquí sigue el resto de tu lógica de actualización...
+
 }
 
 function actualizarTablaUsuariosDOM(userId, nombre, balance) {
