@@ -4,10 +4,10 @@ import { createTransfer, getTransfers, getSentTransfersByUserId, getReceivedTran
 
 const router = Router();
 
-router.post('/', createTransfer);
-router.get('/', getTransfers);
-router.get('/:id/sent', getSentTransfersByUserId);
-router.get('/:id/received', getReceivedTransfersByUserId);
+router.post('/api/transfers', createTransfer);
+router.get('/api/transfers', getTransfers);
+router.get('/api/transfers/:id/sent', getSentTransfersByUserId);
+router.get('/api/transfers/:id/received', getReceivedTransfersByUserId);
 
 
 export default router;

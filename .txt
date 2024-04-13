@@ -1,0 +1,41 @@
+    <!-- Navbar -->
+    <div class="navbar bg-base-100">
+        <div class="navbar-start ">
+            <a class="btn btn-ghost text-xl">Banco Solar</a>
+            <i class="fa-solid fa-sun fa-spin text-xl"></i>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1  bg-base-200 rounded-box">
+                <li><a id="open-client-drawer" class=" text-l">Registrarse</a>
+                </li>
+                <li><a id="open-transfer-drawer" class=" text-l">Transferencias</a></li>
+                <li><a class=" text-l">Usuarios</a></li>
+                <li><a class=" text-l">Transacciones</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <label class="flex cursor-pointer gap-2 "">
+                <span class=" label-text">Dark</span>
+                <input type="checkbox" value="synthwave" class="toggle theme-controller" checked />
+                <span class="label-text">Synthwave</span>
+            </label>
+        </div>
+    </div>
+
+   <!-- Hero-->
+    <!-- <div class="hero min-h-screen"
+        style="background-image: url(https://daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.jpg);">
+        <div class="hero-overlay bg-opacity-70"></div>
+        <div class="hero-content text-center text-neutral-content">
+            <div class="max-w-md">
+                <h1 class="text-5xl font-bold">Tu Futuro Financiero Comienza Aquí</h1>
+                <p class="py-6">En Mi Banco, tu seguridad y prosperidad son nuestra prioridad. Ofrecemos soluciones
+                    financieras personalizadas para ayudarte a alcanzar tus metas. Desde cuentas de ahorro que crecen
+                    contigo, hasta opciones de inversión innovadoras. Construye el mañana que deseas con la confianza y
+                    el soporte que mereces.</p>
+                <a href="https://cdn.computerhoy.com/sites/navi.axelspringer.es/public/media/image/2015/04/95797-trollface.jpg?tf=1200x"
+                    target="_blank" rel="noopener noreferrer" class="btn btn-primary">Explora Nuestros Servicios</a>
+            </div>
+        </div>
+    </div>  -->
+
