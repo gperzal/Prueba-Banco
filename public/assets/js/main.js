@@ -104,8 +104,8 @@ function cargarContenidoUsuarios() {
                                 <td>${user.nombre}</td>
                                 <td>${user.balance}</td>
                                 <td>
-                                    <button class="btn btn-xs" onclick="editarUsuario(${user.id})">Editar</button>
-                                    <button class="btn btn-xs" onclick="eliminarUsuario(${user.id})">Eliminar</button>
+                                    <button class="btn btn-xs btn-info" onclick="editarUsuario(${user.id})">Editar</button>
+                                    <button class="btn btn-xs btn-error" onclick="eliminarUsuario(${user.id})">Eliminar</button>
                                 </td>
                             </tr>
                         `;
@@ -121,28 +121,56 @@ function cargarContenidoUsuarios() {
 }
 
 
-// // Función para abrir el modal de edición con los datos del usuario
-// function editarUsuario(userId) {
-//     // Aquí haces una llamada a tu API para obtener los datos del usuario por su ID
-//     fetch(`/api/users/${userId}`)
-//         .then(response => response.json())
-//         .then(user => {
-//             // Rellena los campos del formulario con los datos del usuario
-//             document.getElementById('editUserName').value = user.nombre;
-//             document.getElementById('editUserBalance').value = user.balance;
 
-//             // Guarda el ID del usuario en el formulario para saber qué usuario actualizar
-//             const form = document.getElementById('editUserForm');
-//             form.dataset.userId = userId;
+// Función para Eliminar un usuario// Asumiendo que tienes un botón de "Eliminar" en cada fila de la tabla que llama a esta función
 
-//             // Muestra el modal
-//             const modal = document.getElementById('editUserModal');
-//             modal.showModal();
-//         })
-//         .catch(error => console.error('Error al obtener los datos del usuario:', error));
-// }
+// Esta función se llama cuando se hace clic en el botón de "Eliminar" de un usuario en la tabla
+function confirmarEliminacion(userId) {
+    const deleteUserModal = document.getElementById('deleteUserModal');
+    const botonEliminar = deleteUserModal.querySelector('.btn-error');
+
+    // Guarda el ID del usuario en el botón de eliminar del modal
+    botonEliminar.dataset.userId = userId;
+
+    // Muestra el modal de confirmación
+    deleteUserModal.showModal();
+}
+
+// Añadir un controlador de eventos al botón de eliminar dentro del modal
+document.querySelector('#deleteUserModal .btn-error').addEventListener('click', function () {
+    const userId = this.dataset.userId; // El ID del usuario a eliminar
+    eliminarUsuario(userId);
+});
+
+function eliminarUsuario(userId) {
+    // Aquí iría la llamada a la API
+    fetch(`/api/users/${userId}`, {
+        method: 'DELETE'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al eliminar el usuario');
+            }
+            // Elimina la fila de la tabla y cierra el modal
+            document.querySelector(`tr[data-user-id="${userId}"]`).remove();
+            document.getElementById('deleteUserModal').close();
+        })
+        .catch(error => {
+            console.error('Error al eliminar el usuario:', error);
+            // Aquí podrías mostrar un mensaje de error si fuera necesario
+        });
+}
+
+// Esta función se llama cuando se hace clic en "Cancelar" en el modal de confirmación
+function cerrarModalEliminar() {
+    document.getElementById('deleteUserModal').close();
+}
 
 
+
+// FIN ELIMINAR USUARIO
+
+// Función para Actualizar un usuario
 function editarUsuario(userId) {
     // Aquí haces una llamada a tu API para obtener los datos del usuario por su ID
     fetch(`/api/users/${userId}`)
@@ -204,7 +232,7 @@ function actualizarTablaUsuariosDOM(userId, nombre, balance) {
         filaUsuario.querySelector(".nombre-usuario").textContent = nombre;
         filaUsuario.querySelector(".balance-usuario").textContent = balance;
     } else {
-     
+
         cargarContenidoUsuarios();
     }
 }
@@ -217,7 +245,7 @@ function closeEditModal() {
     form.removeEventListener('submit', manejarEnvioFormulario);
 }
 
-
+// FIN EDITAR USUARIO
 
 
 // Función para configurar la carga de usuarios, si es necesario.

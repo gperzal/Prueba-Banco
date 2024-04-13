@@ -1,6 +1,8 @@
 import { Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
 
-process.loadEnvFile();
+dotenv.config();
+//process.loadEnvFile();
 
 const sequelize = new Sequelize(
     process.env.PGDATABASE,
