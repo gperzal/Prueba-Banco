@@ -161,6 +161,7 @@ export function cargarContenidoUsuarios() {
 
 
             attachUserEventListeners();
+            document.getElementById('userTableSkeleton').classList.add('hidden');
         })
         .catch(error => {
             console.error('Error al cargar los usuarios:', error);
