@@ -241,7 +241,7 @@ function cargarContenidoUsuarios() {
                         tableBody.innerHTML += row;
                     });
                     // Ocultar el skeleton y mostrar la tabla
-                    // Ocultar el skeleton y mostrar la tabla
+                    console.log('Antes de ocultar skeleton:', document.getElementById('userTableSkeleton'));
                     document.getElementById('userTableSkeleton').classList.add('hidden');
 
 
@@ -295,7 +295,7 @@ function cargarContenidoTransferencias() {
                         `;
                         tableBody.innerHTML += row;
                     });
-
+                    console.log('Antes de ocultar skeleton:', document.getElementById('userTableSkeleton'));
                     document.getElementById('userTableSkeleton').classList.add('hidden');
                 })
                 .catch(error => console.error('Error al cargar las transferencias:', error));

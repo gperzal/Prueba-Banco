@@ -24,3 +24,23 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+  50% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+  100% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}
+
+.skeleton-loader .skeleton {
+  display: block;
+  height: 1em; /* Altura del skeleton */
+  margin-bottom: 1em; /* Espacio entre los skeletons */
+  background: rgba(165, 165, 165, 0.1);
+  animation: skeleton-loading 1.2s infinite ease-in-out;
+}
