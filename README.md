@@ -4,7 +4,10 @@ Banco Solar es una aplicación web moderna diseñada para proporcionar una exper
 
 ## Deploy
 
-La aplicación está desplegada y disponible para uso en: [Like Me en Mi Banco Solar](https://banco-2wbt.onrender.com/)
+La aplicación está desplegada y disponible para uso en: [Render en Mi Banco Solar](https://banco-2wbt.onrender.com/)
+
+
+## Tecnologías Utilizadas
 
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
