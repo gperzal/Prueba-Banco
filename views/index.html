@@ -92,7 +92,8 @@
         ease-in-out">
         <div class="p-4">
             <h2 class="text-lg font-semibold">Crear Cliente</h2>
-            <button class="btn btn-sm btn-circle absolute right-2 top-2"">&times;</button>
+            <button class="btn btn-sm btn-circle absolute right-2 top-2" id="closeDrawerClient">&times;</button>
+
             <!-- Formulario para agregar un nuevo cliente -->
             <form id=" add-client-form" class="mt-4">
                 <div class="form-control">
@@ -111,7 +112,7 @@
                 <div class="form-control mt-4">
                     <button type="submit" class="btn btn-primary">Registrar Cliente</button>
                 </div>
-                </form>
+            </form>
         </div>
     </div>
 
@@ -120,8 +121,8 @@
     ease-in-out">
         <div class="p-4">
             <h2 class="text-lg font-semibold">Transferencias</h2>
-            <button class="btn btn-sm btn-circle absolute right-2 top-2"
-                onclick="toggleTransferDrawer()">&times;</button>
+            <button class="btn btn-sm btn-circle absolute right-2 top-2" id="closeDrawerTransfer">&times;</button>
+
             <!-- Formulario para realizar transferencias -->
             <form id="transfer-form" class="mt-4">
                 <div class="form-control">
@@ -196,7 +197,7 @@
     </footer>
     <!-- Tablas y demás elementos aquí -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="/assets/js/main.js"></script>
+    <script defer type="module" src="/assets/js/main.js"></script>
 
 
 </body>
