@@ -63,52 +63,52 @@ export const getTransfers = async (req, res, next) => {
 };
 
 
-// export const getTransfersByUserId = async (req, res, next) => {
-//     const userId = req.params.id; // Obtiene el ID del usuario desde el parámetro de ruta
+export const getTransfersByUserId = async (req, res, next) => {
+    const userId = req.params.id; // Obtiene el ID del usuario desde el parámetro de ruta
 
-//     try {
-//         const transfers = await Transfer.findAll({
-//             where: {
-//                 [Op.or]: [
-//                     { emisorId: userId },
-//                     { receptorId: userId }
-//                 ]
-//             },
-//             // Opcional: Incluir detalles del emisor y receptor si es necesario
-//         });
+    try {
+        const transfers = await Transfer.findAll({
+            where: {
+                [Op.or]: [
+                    { emisorId: userId },
+                    { receptorId: userId }
+                ]
+            },
+            // Opcional: Incluir detalles del emisor y receptor si es necesario
+        });
 
-//         res.json(transfers);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
+        res.json(transfers);
+    } catch (error) {
+        next(error);
+    }
+};
 
-// export const getSentTransfersByUserId = async (req, res, next) => {
-//     const userId = req.params.id;
+export const getSentTransfersByUserId = async (req, res, next) => {
+    const userId = req.params.id;
 
-//     try {
-//         const sentTransfers = await Transfer.findAll({
-//             where: { emisorId: userId },
-//             // Opcional: Incluir detalles del receptor si es necesario
-//         });
+    try {
+        const sentTransfers = await Transfer.findAll({
+            where: { emisorId: userId },
+            // Opcional: Incluir detalles del receptor si es necesario
+        });
 
-//         res.json(sentTransfers);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
+        res.json(sentTransfers);
+    } catch (error) {
+        next(error);
+    }
+};
 
-// export const getReceivedTransfersByUserId = async (req, res, next) => {
-//     const userId = req.params.id;
+export const getReceivedTransfersByUserId = async (req, res, next) => {
+    const userId = req.params.id;
 
-//     try {
-//         const receivedTransfers = await Transfer.findAll({
-//             where: { receptorId: userId },
-//             // Opcional: Incluir detalles del emisor si es necesario
-//         });
+    try {
+        const receivedTransfers = await Transfer.findAll({
+            where: { receptorId: userId },
+            // Opcional: Incluir detalles del emisor si es necesario
+        });
 
-//         res.json(receivedTransfers);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
+        res.json(receivedTransfers);
+    } catch (error) {
+        next(error);
+    }
+};
