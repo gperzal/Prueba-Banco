@@ -3,8 +3,13 @@ import Transfer from '../models/TransferModel.js';
 import User from '../models/UserModel.js';
 import sequelize from '../../config/dbConfig.js';
 
+
 export const createTransfer = async (req, res, next) => {
     const { emisorId, receptorId, monto } = req.body;
+
+    // Asegúrate de que 'monto' sea un número usando el operador '+' para convertirlo.
+    const montoNumerico = +monto;
+
     const t = await sequelize.transaction();
 
     try {
@@ -17,13 +22,13 @@ export const createTransfer = async (req, res, next) => {
         }
 
         // Verificar saldo del emisor
-        if (emisor.balance < monto) {
+        if (emisor.balance < montoNumerico) {
             throw new Error('Saldo insuficiente');
         }
 
         // Realizar transferencia
-        emisor.balance -= monto;
-        receptor.balance += monto;
+        emisor.balance -= montoNumerico;
+        receptor.balance += montoNumerico;
 
         await emisor.save({ transaction: t });
         await receptor.save({ transaction: t });
@@ -32,7 +37,7 @@ export const createTransfer = async (req, res, next) => {
         const transfer = await Transfer.create({
             emisorId,
             receptorId,
-            monto
+            monto: montoNumerico // Usa la variable 'montoNumerico' aquí
         }, { transaction: t });
 
         // Comprometer la transacción
@@ -58,52 +63,52 @@ export const getTransfers = async (req, res, next) => {
 };
 
 
-export const getTransfersByUserId = async (req, res, next) => {
-    const userId = req.params.id; // Obtiene el ID del usuario desde el parámetro de ruta
+// export const getTransfersByUserId = async (req, res, next) => {
+//     const userId = req.params.id; // Obtiene el ID del usuario desde el parámetro de ruta
 
-    try {
-        const transfers = await Transfer.findAll({
-            where: {
-                [Op.or]: [
-                    { emisorId: userId },
-                    { receptorId: userId }
-                ]
-            },
-            // Opcional: Incluir detalles del emisor y receptor si es necesario
-        });
+//     try {
+//         const transfers = await Transfer.findAll({
+//             where: {
+//                 [Op.or]: [
+//                     { emisorId: userId },
+//                     { receptorId: userId }
+//                 ]
+//             },
+//             // Opcional: Incluir detalles del emisor y receptor si es necesario
+//         });
 
-        res.json(transfers);
-    } catch (error) {
-        next(error);
-    }
-};
+//         res.json(transfers);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
 
-export const getSentTransfersByUserId = async (req, res, next) => {
-    const userId = req.params.id;
+// export const getSentTransfersByUserId = async (req, res, next) => {
+//     const userId = req.params.id;
 
-    try {
-        const sentTransfers = await Transfer.findAll({
-            where: { emisorId: userId },
-            // Opcional: Incluir detalles del receptor si es necesario
-        });
+//     try {
+//         const sentTransfers = await Transfer.findAll({
+//             where: { emisorId: userId },
+//             // Opcional: Incluir detalles del receptor si es necesario
+//         });
 
-        res.json(sentTransfers);
-    } catch (error) {
-        next(error);
-    }
-};
+//         res.json(sentTransfers);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
 
-export const getReceivedTransfersByUserId = async (req, res, next) => {
-    const userId = req.params.id;
+// export const getReceivedTransfersByUserId = async (req, res, next) => {
+//     const userId = req.params.id;
 
-    try {
-        const receivedTransfers = await Transfer.findAll({
-            where: { receptorId: userId },
-            // Opcional: Incluir detalles del emisor si es necesario
-        });
+//     try {
+//         const receivedTransfers = await Transfer.findAll({
+//             where: { receptorId: userId },
+//             // Opcional: Incluir detalles del emisor si es necesario
+//         });
 
-        res.json(receivedTransfers);
-    } catch (error) {
-        next(error);
-    }
-};
+//         res.json(receivedTransfers);
+//     } catch (error) {
+//         next(error);
+//     }
+// };

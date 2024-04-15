@@ -1,12 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Encuentra el enlace de usuarios y agrega el evento click
-    document.querySelectorAll('[data-table-target]').forEach(button => {
+    //     // Encuentra el enlace de usuarios y agrega el evento click
+    //     document.querySelectorAll('[data-table-target]').forEach(button => {
+    //         button.addEventListener('click', (e) => {
+    //             e.preventDefault(); // Previene la navegación directa
+    //             cargarContenidoUsuarios(); // Función que cargará la tabla de usuarios
+    //         });
+
+    //     });
+
+    //     // Encuentra el enlace de usuarios y agrega el evento click
+    //     document.querySelectorAll('[data-table-target]').forEach(button => {
+    //         button.addEventListener('click', (e) => {
+    //             e.preventDefault(); // Previene la navegación directa
+    //             cargarContenidoTransferencias(); // Función que cargará la tabla de usuarios
+    //         });
+
+    //     });
+
+    document.querySelectorAll('.linkUsuarios').forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault(); // Previene la navegación directa
             cargarContenidoUsuarios(); // Función que cargará la tabla de usuarios
         });
+    });
 
+    // Encuentra el enlace de transferencias y agrega el evento click
+    document.querySelectorAll('.linkTransfer').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault(); // Previene la navegación directa
+            cargarContenidoTransferencias(); // Función que cargará la tabla de transferencias
+        });
     });
 
     // Selecciona todos los botones que abren drawers y asigna eventos
@@ -40,85 +64,115 @@ document.addEventListener('DOMContentLoaded', () => {
         drawer.style.transform = 'translateX(100%)';
     }
 
-    // Función para agregar un nuevo usuario
-    document.getElementById('add-client-form').addEventListener('submit', function (event) {
-        event.preventDefault(); // Previene el envío normal del formulario
-        // Recoge los datos del formulario
-        const nombre = document.getElementById('clientName').value;
-        const balance = document.getElementById('clientBalance').value;
 
-        // Prepara el objeto de datos para enviar al servidor
-        const userData = {
-            nombre: nombre,
-            balance: balance
-        };
+    document.addEventListener('submit', function (event) {
+        const form = event.target;
 
-        // Envía la solicitud POST al servidor
-        fetch('/api/users', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json', // Especifica el tipo de contenido
-            },
-            body: JSON.stringify(userData), // Convierte los datos del usuario a JSON
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Problema al agregar el cliente');
-                }
-                return response.json(); // Procesa la respuesta del servidor
-            })
-            .then(data => {
-                console.log('Cliente agregado con éxito', data);
-                // Aquí puedes actualizar la UI o cerrar el drawer si es necesario
-                document.getElementById('add-client-form').reset();
-                cargarContenidoUsuarios();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Maneja errores, como mostrar una alerta al usuario
-            });
+        if (form.id === ' add-client-form') {
+            event.preventDefault(); // Previene el envío normal del formulario
+            handleAddClientForm(form);
+        } else if (form.id === 'transfer-form') {
+            event.preventDefault(); // Previene el envío normal del formulario
+            handleTransferForm(form);
+        }
+
     });
-
-
-
-
-    // Función para cargar la tabla de usuarios
-    document.getElementById('editUserForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Previene el envío normal del formulario
-
-        // Obtiene los valores del formulario
-        const userId = this.dataset.userId; // Asegúrate de que este dato se establece correctamente
-        const nombre = document.getElementById('editUserName').value;
-        const balance = document.getElementById('editUserBalance').value;
-
-        // Llamada a la API para actualizar los datos del usuario
-        fetch(`/api/users/${userId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ nombre, balance }),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error al actualizar el usuario');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Cierra el modal y recarga el contenido de usuarios
-                cargarContenidoUsuarios();
-                document.getElementById('editUserModal').close();
-            })
-            .catch(error => {
-                console.error('Error al actualizar el usuario:', error);
-
-            });
-    });
-
 
 
 });
+
+
+function handleAddClientForm(form) {
+    // Aquí manejas la lógica de agregar un cliente
+    console.log('Manejando agregar cliente...');
+    const nombre = document.getElementById('clientName').value;
+    const balance = document.getElementById('clientBalance').value;
+
+    // Prepara el objeto de datos para enviar al servidor
+    const userData = {
+        nombre: nombre,
+        balance: balance
+    };
+
+    // Envía la solicitud POST al servidor
+    fetch('/api/users', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json', // Especifica el tipo de contenido
+        },
+        body: JSON.stringify(userData), // Convierte los datos del usuario a JSON
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Problema al agregar el cliente');
+            }
+            return response.json(); // Procesa la respuesta del servidor
+        })
+        .then(data => {
+            console.log('Cliente agregado con éxito', data);
+            // Aquí puedes actualizar la UI o cerrar el drawer si es necesario
+            document.getElementById(' add-client-form').reset();
+            showToast('Cliente agregado con éxito', 'success');
+            cargarContenidoUsuarios();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Maneja errores, como mostrar una alerta al usuario
+        });
+}
+
+function handleTransferForm(form) {
+    // Aquí manejas la lógica de transferencia
+    console.log('Manejando transferencia...');
+    const emisorId = document.getElementById('emisorId').value;
+    const receptorId = document.getElementById('receptorId').value;
+    const monto = Number(document.getElementById('montoTransferencia').value);
+
+    console.log(emisorId, receptorId, monto);
+    // Aquí agregas la lógica para asegurarte de que el emisor y el receptor no sean el mismo
+    if (!validateTransfer()) {
+        // Mostrar error si es necesario
+        console.error('Emisor y receptor no pueden ser el mismo.');
+        return;
+    }
+
+    // Prepara el objeto de datos para enviar al servidor
+    const transferData = {
+        emisorId: emisorId,
+        receptorId: receptorId,
+        monto: monto
+    };
+
+    // Envía la solicitud POST al servidor
+    fetch('/api/transfers', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json', // Especifica el tipo de contenido
+        },
+        body: JSON.stringify(transferData), // Convierte los datos de la transferencia a JSON
+    })
+        .then(response => {
+            console.log(response); // Imprime la respuesta completa para depuración
+            if (!response.ok) {
+                // Si quieres inspeccionar el cuerpo de la respuesta cuando hay un error:
+                return response.text().then(text => { throw new Error(text) });
+            }
+            return response.json(); // Procesa la respuesta del servidor
+        })
+        .then(data => {
+            console.log('Transferencia realizada con éxito', data);
+            showToast('Transferencia realizada con éxito', 'success');
+            // Aquí puedes actualizar la UI o cerrar el drawer si es necesario
+            document.getElementById('drawer-transfer').classList.remove('open'); // Cierra el drawer
+            document.getElementById('transfer-form').reset(); // Limpia el formulario
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Maneja errores, como mostrar una alerta al usuario
+        });
+}
+
+
 
 
 function cargarContenidoUsuarios() {
@@ -128,6 +182,41 @@ function cargarContenidoUsuarios() {
             // Reemplaza el contenido de dynamicContent con la tabla de usuarios
             const dynamicContent = document.getElementById('dynamicContent');
             dynamicContent.innerHTML = html;
+
+            var editUserForm = document.getElementById('editUserForm');
+            if (editUserForm) {
+                editUserForm.addEventListener('submit', function (event) {
+                    const userId = this.dataset.userId; // Asegúrate de que este dato se establece correctamente
+                    const nombre = document.getElementById('editUserName').value;
+                    const balance = document.getElementById('editUserBalance').value;
+
+                    // Llamada a la API para actualizar los datos del usuario
+                    fetch(`/api/users/${userId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ nombre, balance }),
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Error al actualizar el usuario');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Cierra el modal y recarga el contenido de usuarios
+                            cargarContenidoUsuarios();
+                            document.getElementById('editUserModal').close();
+                        })
+                        .catch(error => {
+                            console.error('Error al actualizar el usuario:', error);
+
+                        });
+                });
+            }
+
+
             // Ahora, carga los usuarios con una llamada a la API
             fetch('/api/users')
                 .then(response => response.json())
@@ -151,15 +240,67 @@ function cargarContenidoUsuarios() {
                         `;
                         tableBody.innerHTML += row;
                     });
-
-
+                    // Ocultar el skeleton y mostrar la tabla
                     // Ocultar el skeleton y mostrar la tabla
                     document.getElementById('userTableSkeleton').classList.add('hidden');
-                    document.getElementById('userTableContainer').classList.remove('hidden');
+
+
                 })
                 .catch(error => console.error('Error al cargar los usuarios:', error));
         })
         .catch(error => console.error('Error al cargar la tabla de usuarios:', error));
+}
+
+function cargarContenidoTransferencias() {
+    // Primero, carga la plantilla de la tabla de transferencias
+    fetch('/table/transfers.html')
+        .then(response => response.text())
+        .then(html => {
+            // Inserta el HTML en el contenedor dinámico
+            document.getElementById('dynamicContent').innerHTML = html;
+
+            // Luego, carga los datos de las transferencias
+            fetch('/api/transfers')
+                .then(response => response.json())
+                .then(transfers => {
+
+                    return Promise.all(transfers.map(transfer => {
+                        // Aquí obtienes los nombres del emisor y receptor para cada transferencia
+                        return Promise.all([
+                            fetch(`/api/users/${transfer.emisorId}`).then(res => res.json()),
+                            fetch(`/api/users/${transfer.receptorId}`).then(res => res.json())
+                        ]).then(([emisor, receptor]) => {
+                            // Agregamos los nombres de emisor y receptor al objeto de transferencia
+                            transfer.nombreEmisor = emisor.nombre;
+                            transfer.nombreReceptor = receptor.nombre;
+                            return transfer;
+                        });
+                    }));
+                })
+                .then(transfersConNombres => {
+
+                    // Ahora que tenemos los nombres, podemos llenar la tabla
+                    const tableBody = document.querySelector('#transfersTable tbody');
+                    tableBody.innerHTML = ''; // Limpiar la tabla antes de añadir nuevos datos
+
+                    transfersConNombres.forEach(transfer => {
+                        const fecha = new Date(transfer.fecha).toLocaleString();
+                        const row = `
+                            <tr>
+                                <td>${fecha}</td>
+                                <td>${transfer.nombreEmisor}</td>
+                                <td>${transfer.nombreReceptor}</td>
+                                <td>${transfer.monto}</td>
+                            </tr>
+                        `;
+                        tableBody.innerHTML += row;
+                    });
+
+                    document.getElementById('userTableSkeleton').classList.add('hidden');
+                })
+                .catch(error => console.error('Error al cargar las transferencias:', error));
+        })
+        .catch(error => console.error('Error al cargar la tabla de transferencias:', error));
 }
 
 
@@ -281,18 +422,7 @@ function closeEditModal() {
 // FIN EDITAR USUARIO
 
 
-// Función para configurar la carga de usuarios, si es necesario.
-function loadClientOptions() {
-    const clients = [{ id: 1, name: 'Cliente 1' }, { id: 2, name: 'Cliente 2' }]; // Debería venir de una API
-    const emisor = document.getElementById('emisorId');
-    const receptor = document.getElementById('receptorId');
 
-    clients.forEach(client => {
-        let option = new Option(client.name, client.id);
-        emisor.append(option.cloneNode(true));
-        receptor.append(option);
-    });
-}
 
 // Función para validar que emisor y receptor no sean iguales
 function validateTransfer() {
@@ -300,12 +430,30 @@ function validateTransfer() {
     const receptor = document.getElementById('receptorId').value;
 
     if (emisor === receptor) {
-        alert("No puede transferirse dinero a sí mismo, debe elegir otro receptor.");
+        showToast('No puede transferirse dinero a sí mismo', 'info');
         return false; // Evita que el formulario se envíe
     }
     return true; // Permite que el formulario se envíe
 }
 
+
+
+function showToast(message, type) {
+    // Crea el div del toast
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type}`;
+
+    // Agrega el mensaje al toast
+    toast.textContent = message;
+
+    // Añade el toast al DOM
+    document.querySelector('.toast').appendChild(toast);
+
+    // Elimina el toast después de 5 segundos
+    setTimeout(() => {
+        toast.remove();
+    }, 5000);
+}
 
 
 // Cargar opciones cuando la página esté lista
@@ -334,3 +482,10 @@ async function loadClientOptions() {
 
 // Cargar opciones cuando la página esté lista
 document.addEventListener('DOMContentLoaded', loadClientOptions);
+
+document.addEventListener('DOMContentLoaded', () => {
+    const toastContainer = document.createElement('div');
+    toastContainer.className = 'toast toast-middle toast-middle ';
+    document.body.appendChild(toastContainer);
+});
+

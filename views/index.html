@@ -7,7 +7,7 @@
     <title>Mi Aplicación Bancaria</title>
 
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <link rel="stylesheet" href="/assets/css/output.css">
     <script src="https://kit.fontawesome.com/e16cebc917.js" crossorigin="anonymous"></script>
 </head>
@@ -31,8 +31,8 @@
                     <li><a href="/">Inicio</a></li>
                     <li><a data-drawer-target="drawer-client" class="open-drawer-btn">Registrarse</a>
                     <li><a data-drawer-target="drawer-transfer" class="open-drawer-btn">Transferencias</a></li>
-                    <li><a data-table-target="table-user" class="linkUsuarios">Usuarios</a></li>
-                    <li><a>Transacciones</a></li>
+                    <li><a class="linkUsuarios" href="#">Usuarios</a></li>
+                    <li><a class="linkTransfer" href="#">Transacciones</a></li>
                 </ul>
             </div>
             <a class="btn btn-ghost text-xl">Banco Solar</a>
@@ -44,8 +44,8 @@
                 <li><a href="/">Inicio</a></li>
                 <li><a data-drawer-target="drawer-client" class="open-drawer-btn">Registrarse</a>
                 <li><a data-drawer-target="drawer-transfer" class="open-drawer-btn">Transferencias</a></li>
-                <li><a data-table-target="table-user" class="linkUsuarios" href="#">Usuarios</a></li>
-                <li><a>Transacciones</a></li>
+                <li><a class="linkUsuarios" href="#">Usuarios</a></li>
+                <li><a class="linkTransfer" href="#">Transacciones</a></li>
             </ul>
         </div>
         <div class="navbar-end hidden lg:flex">
@@ -94,7 +94,7 @@
             <h2 class="text-lg font-semibold">Crear Cliente</h2>
             <button class="btn btn-sm btn-circle absolute right-2 top-2"">&times;</button>
             <!-- Formulario para agregar un nuevo cliente -->
-            <form id="add-client-form" class="mt-4">
+            <form id=" add-client-form" class="mt-4">
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">Nombre</span>
@@ -144,13 +144,19 @@
                     <label class="label">
                         <span class="label-text">Monto</span>
                     </label>
-                    <input type="number" placeholder="0" class="input input-bordered bg-white text-black min=" 1"
-                        required>
+                    <input id="montoTransferencia" type="number" placeholder="0"
+                        class="input input-bordered bg-white text-black min=" 1" required>
                 </div>
                 <div class="form-control mt-4">
-                    <button type="submit" class="btn btn-primary">Realizar Transferencia</button>
+                    <div class="tooltip tooltip-open tooltip-bottom tooltip-primary"
+                        data-tip="Revice su saldo disponible">
+                        <button type="submit" class="btn btn-primary ">Realizar
+                            Transferencia</button>
+                    </div>
                 </div>
             </form>
+
+
         </div>
     </div>
 

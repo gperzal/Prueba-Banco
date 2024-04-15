@@ -6,8 +6,8 @@ const router = Router();
 
 router.post('/api/transfers', createTransfer);
 router.get('/api/transfers', getTransfers);
-router.get('/api/transfers/:id/sent', getSentTransfersByUserId);
-router.get('/api/transfers/:id/received', getReceivedTransfersByUserId);
+// router.get('/api/transfers/:id/sent', getSentTransfersByUserId);
+// router.get('/api/transfers/:id/received', getReceivedTransfersByUserId);
 
 
 export default router;
