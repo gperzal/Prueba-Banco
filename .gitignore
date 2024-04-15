@@ -16,6 +16,7 @@ Thumbs.db
 .env.test.local
 .env.production.local
 
+
 # Archivos de registro
 npm-debug.log*
 yarn-debug.log*
@@ -29,3 +30,6 @@ yarn-error.log*
 # Archivos de compilación
 *.log
 *.tscache
+
+# Notas
+.txt

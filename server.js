@@ -9,6 +9,8 @@ const app = express();
 const PORT = 3000;
 
 setupStaticFiles(app)
+// Desactiva el encabezado X-Powered-By
+app.disable('x-powered-by');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(ErrorHandler);

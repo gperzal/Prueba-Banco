@@ -40,6 +40,47 @@ document.addEventListener('DOMContentLoaded', () => {
         drawer.style.transform = 'translateX(100%)';
     }
 
+    // Función para agregar un nuevo usuario
+    document.getElementById('add-client-form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Previene el envío normal del formulario
+        // Recoge los datos del formulario
+        const nombre = document.getElementById('clientName').value;
+        const balance = document.getElementById('clientBalance').value;
+
+        // Prepara el objeto de datos para enviar al servidor
+        const userData = {
+            nombre: nombre,
+            balance: balance
+        };
+
+        // Envía la solicitud POST al servidor
+        fetch('/api/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // Especifica el tipo de contenido
+            },
+            body: JSON.stringify(userData), // Convierte los datos del usuario a JSON
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Problema al agregar el cliente');
+                }
+                return response.json(); // Procesa la respuesta del servidor
+            })
+            .then(data => {
+                console.log('Cliente agregado con éxito', data);
+                // Aquí puedes actualizar la UI o cerrar el drawer si es necesario
+                document.getElementById('add-client-form').reset();
+                cargarContenidoUsuarios();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Maneja errores, como mostrar una alerta al usuario
+            });
+    });
+
+
+
 
     // Función para cargar la tabla de usuarios
     document.getElementById('editUserForm').addEventListener('submit', function (event) {
@@ -293,9 +334,3 @@ async function loadClientOptions() {
 
 // Cargar opciones cuando la página esté lista
 document.addEventListener('DOMContentLoaded', loadClientOptions);
-
-
-
-
-
-
